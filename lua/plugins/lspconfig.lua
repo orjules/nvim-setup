@@ -94,18 +94,6 @@ return {
         },
       })
       
-      -- Optional: YAML (for ROS2 config files)
-      lspconfig.yamlls.setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-        settings = {
-          yaml = {
-            schemas = {
-              ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "docker-compose*.yml",
-            },
-          },
-        },
-      })
     end,
   },
   
@@ -132,7 +120,6 @@ return {
           'pylsp',       -- Python (or 'pyright')
           'cmake',       -- CMake
           'lemminx',     -- XML
-          'yamlls',      -- YAML (optional)
         },
         automatic_installation = true,
       })
