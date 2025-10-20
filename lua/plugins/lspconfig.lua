@@ -7,7 +7,6 @@ return {
       'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
-      local lspconfig = require('lspconfig')
       local cmp_nvim_lsp = require('cmp_nvim_lsp')
       
       -- Add cmp capabilities to LSP
@@ -32,9 +31,7 @@ return {
       end
       
       -- C++ (clangd)
-      lspconfig.clangd.setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
+      vim.lsp.config('clangd', {
         cmd = {
           'clangd',
           '--background-index',
@@ -44,6 +41,8 @@ return {
           '--function-arg-placeholders',
           '--fallback-style=llvm',
         },
+        capabilities = capabilities,
+        on_attach = on_attach,
         init_options = {
           usePlaceholders = true,
           completeUnimported = true,
@@ -52,7 +51,7 @@ return {
       })
       
       -- Python
-      lspconfig.pylsp.setup({
+      vim.lsp.config('pylsp', {
         capabilities = capabilities,
         on_attach = on_attach,
         settings = {
@@ -69,20 +68,20 @@ return {
         },
       })
       
-      -- Alternative Python LSP (often better, uncomment if you prefer)
-      -- lspconfig.pyright.setup({
+      -- Alternative Python LSP (uncomment if you prefer pyright)
+      -- vim.lsp.config('pyright', {
       --   capabilities = capabilities,
       --   on_attach = on_attach,
       -- })
       
       -- CMake
-      lspconfig.cmake.setup({
+      vim.lsp.config('cmake', {
         capabilities = capabilities,
         on_attach = on_attach,
       })
       
       -- XML (for launch files)
-      lspconfig.lemminx.setup({
+      vim.lsp.config('lemminx', {
         capabilities = capabilities,
         on_attach = on_attach,
         settings = {
@@ -94,6 +93,31 @@ return {
         },
       })
       
+      -- YAML (for ROS2 config files)
+      vim.lsp.config('yamlls', {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          yaml = {
+            schemas = {
+              ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "docker-compose*.yml",
+            },
+          },
+        },
+      })
+      
+      -- Rust
+      vim.lsp.config('rust_analyzer', {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          ['rust-analyzer'] = {
+            diagnostics = {
+              enable = true,
+            },
+          },
+        },
+      })
     end,
   },
   
@@ -120,6 +144,8 @@ return {
           'pylsp',       -- Python (or 'pyright')
           'cmake',       -- CMake
           'lemminx',     -- XML
+          'yamlls',      -- YAML (optional)
+          'rust_analyzer', -- Rust
         },
         automatic_installation = true,
       })
